@@ -3,6 +3,7 @@
 # Define a virtual environment directory
 
 VENV_DIR = .venv
+MAKEFILE_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # Rule to create and activate a virtual environment and install dependencies
 install:
 	@echo "Creating and activate virtual environment..."
@@ -17,23 +18,24 @@ clean:
 	@echo "Clean up complete"
 
 # Rule for linting (using flake8 fornow, we'll install it later)
-lint: install
+lint:
 	@echo "Running linting with flake8..."
 	$(VENV_DIR)/Scripts/pip install flake8
 	$(VENV_DIR)/Scripts/flake8 src/
 
 # Rule for testing 
-test: install
+test: 
 	@echo "Running tests..."
-	@echo "TODO: add tests"
+	$(VENV_DIR)/Scripts/pip install pytest
+	$(VENV_DIR)/Scripts/pytest src/test_main.py
 
 #Rule for code formatting
-format: install
+format: 
 	@echo "Running code formatting with Black..."
 	$(VENV_DIR)/Scripts/pip install black
 	$(VENV_DIR)/Scripts/black src/
 
 #Rule to run the application
-run: install
+run: 
 	@echo "Running application..."
 	$(VENV_DIR)/Scripts/python src/main.py
